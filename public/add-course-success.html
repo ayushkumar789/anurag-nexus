@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+      dir="ltr"
+      class="dark-mode">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible"
+          content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Sign Up</title>
+
+    <!-- Prevent the demo from appearing in search engines -->
+    <meta name="robots"
+          content="noindex">
+
+    <link href="https://fonts.googleapis.com/assets/css?family=Lato:400,700%7CRoboto:400,500%7CExo+2:600&display=swap"
+          rel="stylesheet">
+
+    <!-- Preloader -->
+    <link type="text/css"
+          href="/assets/vendor/spinkit.css"
+          rel="stylesheet">
+
+    <!-- Perfect Scrollbar -->
+    <link type="text/css"
+          href="/assets/vendor/perfect-scrollbar.css"
+          rel="stylesheet">
+
+    <!-- Material Design Icons -->
+    <link type="text/css"
+          href="/assets/css/material-icons.css"
+          rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link type="text/css"
+          href="/assets/css/fontawesome.css"
+          rel="stylesheet">
+
+    <!-- Preloader -->
+    <link type="text/css"
+          href="/assets/css/preloader.css"
+          rel="stylesheet">
+
+    <!-- App CSS -->
+    <link type="text/css"
+          href="/assets/css/app.css"
+          rel="stylesheet">
+
+    <!-- Dark Mode CSS -->
+    <link type="text/css"
+          href="/assets/css/dark.css"
+          rel="stylesheet">
+    <style>
+        /* Centering the success message */
+        .success-container {
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        /* Green checkmark animation */
+        .success-circle {
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #28a745;
+            position: relative;
+            animation: popIn 0.5s ease-in-out;
+        }
+
+        .success-circle::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 50px;
+            height: 25px;
+            border: solid white;
+            border-width: 0 0 6px 6px;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            animation: checkmark 0.3s ease-in-out 0.5s forwards;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes checkmark {
+            0% { width: 0; height: 0; opacity: 0; }
+            100% { width: 50px; height: 25px; opacity: 1; }
+        }
+
+        /* Signup successful text (white color) */
+        .success-text {
+            font-size: 24px;
+            color: white;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        /* Blue "Go to Login" button */
+        .btn-home {
+            margin-top: 20px;
+            padding: 12px 24px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 18px;
+            display: inline-block;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-home:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+</head>
+
+<body class="layout-app ">
+
+<div class="preloader">
+    <div class="sk-chase">
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+    </div>
+
+    <!-- <div class="sk-bounce">
+<div class="sk-bounce-dot"></div>
+<div class="sk-bounce-dot"></div>
+</div> -->
+
+
+</div>
+
+<!-- Drawer Layout -->
+
+<div class="mdk-drawer-layout js-mdk-drawer-layout"
+     data-push
+     data-responsive-width="992px">
+    <div class="mdk-drawer-layout__content page-content">
+
+        <!-- Header -->
+
+        <div class="navbar navbar-expand navbar-dark border-bottom-2"
+             id="default-navbar"
+             data-primary>
+
+            <!-- Navbar toggler -->
+            <button class="navbar-toggler w-auto mr-16pt d-block d-lg-none rounded-0"
+                    type="button"
+                    data-toggle="sidebar">
+                <span class="material-icons">short_text</span>
+            </button>
+
+            <!-- Navbar Brand -->
+            <a href="index.jsp"
+               class="navbar-brand mr-16pt d-lg-none">
+                <!-- <img class="navbar-brand-icon" src="/assets/images/logo/white-100@2x.png" width="30" alt="Au Nexus "> -->
+
+                <span class="avatar avatar-sm navbar-brand-icon mr-0 mr-lg-8pt">
+
+                            <span class="avatar-title rounded bg-primary"><img src="/assets/images/illustration/student/128/white.svg"
+                                                                               alt="logo"
+                                                                               class="img-fluid" /></span>
+
+                        </span>
+
+                <span class="d-none d-lg-block">Au Nexus </span>
+            </a>
+
+            <ul class="nav navbar-nav d-none d-sm-flex flex justify-content-start ml-8pt">
+                <li class="nav-item">
+                    <a href="index.jsp"
+                       class="nav-link">Home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="#"
+                       class="nav-link dropdown-toggle"
+                       data-toggle="dropdown"
+                       data-caret="false">Courses</a>
+                    <div class="dropdown-menu">
+                        <a href="courses.jsp"
+                           class="dropdown-item">Browse Courses</a>
+                        <a href="student-course.html"
+                           class="dropdown-item">Preview Course</a>
+                        <a href="student-lesson.html"
+                           class="dropdown-item">Preview Lesson</a>
+                        <a href="student-take-course.html"
+                           class="dropdown-item"><span class="mr-16pt">Take Course</span> <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></a>
+                        <a href="student-take-lesson.html"
+                           class="dropdown-item">Take Lesson</a>
+
+                        <a href="StudentManagementSystem/StudentDashboardServlet"
+                           class="dropdown-item">Student Dashboard</a>
+                        <a href="student-my-courses.jsp"
+                           class="dropdown-item">My Courses</a>
+
+                    </div>
+                </li>
+
+
+                <li class="nav-item dropdown">
+                    <a href="#"
+                       class="nav-link dropdown-toggle"
+                       data-toggle="dropdown"
+                       data-caret="false">Teachers</a>
+                    <div class="dropdown-menu">
+                        <a href="instructor-dashboard.jsp"
+                           class="dropdown-item">Instructor Dashboard</a>
+                        <a href="instructor-courses.html"
+                           class="dropdown-item">Manage Courses</a>
+                        <a href="instructor-quizzes.html"
+                           class="dropdown-item">Manage Quizzes</a>
+                        <a href="instructor-edit-course.html"
+                           class="dropdown-item">Edit Course</a>
+
+                    </div>
+                </li>
+                <li class="nav-item dropdown"
+                    data-toggle="tooltip"
+                    data-title="Community"
+                    data-placement="bottom"
+                    data-boundary="window">
+                    <a href="#"
+                       class="nav-link dropdown-toggle"
+                       data-toggle="dropdown"
+                       data-caret="false">
+                        <i class="material-icons">people_outline</i>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="teachers.html"
+                           class="dropdown-item">Browse Teachers</a>
+                        <a href="student-profile.jsp"
+                           class="dropdown-item">Student Profile</a>
+                        <a href="teacher-profile.html"
+                           class="dropdown-item">Instructor Profile</a>
+                    </div>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav ml-auto mr-0">
+                <li class="nav-item">
+                    <a href="login.html"
+                       class="nav-link"
+                       data-toggle="tooltip"
+                       data-title="Login"
+                       data-placement="bottom"
+                       data-boundary="window"><i class="material-icons">lock_open</i></a>
+                </li>
+                <li class="nav-item active">
+                    <a href="signup.html"
+                       class="btn btn-outline-white">Get Started</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- // END Header -->
+
+        <!-- BEFORE Page Content -->
+
+        <!-- // END BEFORE Page Content -->
+
+
+<div class="success-container">
+    <div class="success-circle"></div>
+    <div class="success-text">🎉 Course Added Successfully! 🎉</div>
+    <a href="/instructor/courses" class="btn">View Courses</a>
+        <a href="/instructor/add-course" class="btn">Add Another Course</a>
+</div>
+
+        <!-- Footer -->
+
+        <div class=" border-top-2 mt-auto">
+            <div class="container page__container page-section d-flex flex-column">
+                <p class="text-70 brand mb-24pt">
+                    <img class="brand-icon"
+                         src="/assets/images/logo/black-70@2x.png"
+                         width="30"
+                         alt="Au Nexus "> Au Nexus
+                </p>
+                <p class="measure-lead-max text-50 small mr-8pt">Au Nexus  is a beautifully crafted user interface for modern Education Platforms.</p>
+                <p class="mb-8pt d-flex">
+                    <a href=""
+                       class="text-70 text-underline mr-8pt small">Terms</a>
+                    <a href=""
+                       class="text-70 text-underline small">Privacy policy</a>
+                </p>
+                <p class="text-50 small mt-n1 mb-0">Copyright 2025 &copy; All rights reserved. ~AYush Kumar</p>
+            </div>
+        </div>
+
+        <!-- // END Footer -->
+
+    </div>
+
+    <!-- // END drawer-layout__content -->
+
+    <!-- Drawer -->
+
+
+
+    <!-- // END Drawer -->
+
+</div>
+
+<!-- // END Drawer Layout -->
+
+<!-- jQuery -->
+<script src="/assets/vendor/jquery.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="/assets/vendor/popper.min.js"></script>
+<script src="/assets/vendor/bootstrap.min.js"></script>
+
+<!-- Perfect Scrollbar -->
+<script src="/assets/vendor/perfect-scrollbar.min.js"></script>
+
+<!-- DOM Factory -->
+<script src="/assets/vendor/dom-factory.js"></script>
+
+<!-- MDK -->
+<script src="/assets/vendor/material-design-kit.js"></script>
+
+<!-- App JS -->
+<script src="/assets/js/app.js"></script>
+
+<!-- Preloader -->
+<script src="/assets/js/preloader.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+      dir="ltr"
+      class="dark-mode">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible"
+          content="IE=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Sign Up</title>
+
+    <!-- Prevent the demo from appearing in search engines -->
+    <meta name="robots"
+          content="noindex">
+
+    <link href="https://fonts.googleapis.com/assets/css?family=Lato:400,700%7CRoboto:400,500%7CExo+2:600&display=swap"
+          rel="stylesheet">
+
+    <!-- Preloader -->
+    <link type="text/css"
+          href="/assets/vendor/spinkit.css"
+          rel="stylesheet">
+
+    <!-- Perfect Scrollbar -->
+    <link type="text/css"
+          href="/assets/vendor/perfect-scrollbar.css"
+          rel="stylesheet">
+
+    <!-- Material Design Icons -->
+    <link type="text/css"
+          href="/assets/css/material-icons.css"
+          rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link type="text/css"
+          href="/assets/css/fontawesome.css"
+          rel="stylesheet">
+
+    <!-- Preloader -->
+    <link type="text/css"
+          href="/assets/css/preloader.css"
+          rel="stylesheet">
+
+    <!-- App CSS -->
+    <link type="text/css"
+          href="/assets/css/app.css"
+          rel="stylesheet">
+
+    <!-- Dark Mode CSS -->
+    <link type="text/css"
+          href="/assets/css/dark.css"
+          rel="stylesheet">
+    <style type="text/css">
+        .container {
+            max-width: 100%;
+        }
+
+        form {
+            max-width: 400px; /* Adjust the width here */
+            margin: auto;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+
+    </style>
+
+</head>
+
+<body class="layout-app ">
+
+<div class="preloader">
+    <div class="sk-chase">
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+        <div class="sk-chase-dot"></div>
+    </div>
+
+    <!-- <div class="sk-bounce">
+<div class="sk-bounce-dot"></div>
+<div class="sk-bounce-dot"></div>
+</div> -->
+
+
+</div>
+
+<!-- Drawer Layout -->
+
+<div class="mdk-drawer-layout js-mdk-drawer-layout"
+     data-push
+     data-responsive-width="992px">
+    <div class="mdk-drawer-layout__content page-content">
+
+        <!-- Header -->
+
+        <div class="navbar navbar-expand navbar-dark border-bottom-2"
+             id="default-navbar"
+             data-primary>
+
+            <!-- Navbar toggler -->
+            <button class="navbar-toggler w-auto mr-16pt d-block d-lg-none rounded-0"
+                    type="button"
+                    data-toggle="sidebar">
+                <span class="material-icons">short_text</span>
+            </button>
+
+            <!-- Navbar Brand -->
+            <a href="index.jsp"
+               class="navbar-brand mr-16pt d-lg-none">
+                <!-- <img class="navbar-brand-icon" src="/assets/images/logo/white-100@2x.png" width="30" alt="Au Nexus "> -->
+
+                <span class="avatar avatar-sm navbar-brand-icon mr-0 mr-lg-8pt">
+
+                            <span class="avatar-title rounded bg-primary"><img src="/assets/images/illustration/student/128/white.svg"
+                                                                               alt="logo"
+                                                                               class="img-fluid" /></span>
+
+                        </span>
+
+                <span class="d-none d-lg-block">Au Nexus </span>
+            </a>
+
+            <ul class="nav navbar-nav d-none d-sm-flex flex justify-content-start ml-8pt">
+                <li class="nav-item">
+                    <a href="index.jsp"
+                       class="nav-link">Home</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a href="#"
+                       class="nav-link dropdown-toggle"
+                       data-toggle="dropdown"
+                       data-caret="false">Courses</a>
+                    <div class="dropdown-menu">
+                        <a href="courses.jsp"
+                           class="dropdown-item">Browse Courses</a>
+                        <a href="student-course.html"
+                           class="dropdown-item">Preview Course</a>
+                        <a href="student-lesson.html"
+                           class="dropdown-item">Preview Lesson</a>
+                        <a href="student-take-course.html"
+                           class="dropdown-item"><span class="mr-16pt">Take Course</span> <span class="badge badge-notifications badge-accent text-uppercase ml-auto">Pro</span></a>
+                        <a href="student-take-lesson.html"
+                           class="dropdown-item">Take Lesson</a>
+
+                        <a href="StudentManagementSystem/StudentDashboardServlet"
+                           class="dropdown-item">Student Dashboard</a>
+                        <a href="student-my-courses.jsp"
+                           class="dropdown-item">My Courses</a>
+
+                    </div>
+                </li>
+
+
+                <li class="nav-item dropdown">
+                    <a href="#"
+                       class="nav-link dropdown-toggle"
+                       data-toggle="dropdown"
+                       data-caret="false">Teachers</a>
+                    <div class="dropdown-menu">
+                        <a href="instructor-dashboard.jsp"
+                           class="dropdown-item">Instructor Dashboard</a>
+                        <a href="instructor-courses.html"
+                           class="dropdown-item">Manage Courses</a>
+                        <a href="instructor-quizzes.html"
+                           class="dropdown-item">Manage Quizzes</a>
+                        <a href="instructor-edit-course.html"
+                           class="dropdown-item">Edit Course</a>
+
+                    </div>
+                </li>
+                <li class="nav-item dropdown"
+                    data-toggle="tooltip"
+                    data-title="Community"
+                    data-placement="bottom"
+                    data-boundary="window">
+                    <a href="#"
+                       class="nav-link dropdown-toggle"
+                       data-toggle="dropdown"
+                       data-caret="false">
+                        <i class="material-icons">people_outline</i>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="teachers.html"
+                           class="dropdown-item">Browse Teachers</a>
+                        <a href="student-profile.jsp"
+                           class="dropdown-item">Student Profile</a>
+                        <a href="teacher-profile.html"
+                           class="dropdown-item">Instructor Profile</a>
+                    </div>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav ml-auto mr-0">
+                <li class="nav-item">
+                    <a href="login.html"
+                       class="nav-link"
+                       data-toggle="tooltip"
+                       data-title="Login"
+                       data-placement="bottom"
+                       data-boundary="window"><i class="material-icons">lock_open</i></a>
+                </li>
+                <li class="nav-item active">
+                    <a href="signup.html"
+                       class="btn btn-outline-white">Get Started</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- // END Header -->
+
+        <!-- BEFORE Page Content -->
+
+        <!-- // END BEFORE Page Content -->
+
+
+<!-- Page Content -->
+        <div class="page-section container page__container">
+            <div class="col-lg-10 p-0 mx-auto">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <h2 class="text-center">Sign Up</h2>
+
+                        <form action="/api/register" method="POST">
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email:</label>
+                                <input id="email" name="email" type="email" class="form-control" placeholder="Your email address ..." required>
+                                <!-- Error messages will be handled via JS or query params -->
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password" class="form-label">Password:</label>
+                                <input id="password" name="password" type="password" class="form-control" placeholder="Your password ..." required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="confirmPassword" class="form-label">Confirm Password:</label>
+                                <input id="confirmPassword" name="confirmPassword" type="password" class="form-control" placeholder="Confirm your password ..." required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="role" class="form-label">Role:</label>
+                                <select id="role" name="role" class="form-control" required>
+                                    <option value="student">Student</option>
+                                    <option value="instructor">Instructor</option>
+                                </select>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Sign Up</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- OR Sign-in with Google -->
+        <div class="page-separator justify-content-center m-0">
+            <div class="page-separator__text">or sign-in with</div>
+        </div>
+
+        <div class="page-section text-center">
+            <div class="container page__container">
+                <a href="#" class="btn btn-google btn-block-xs disabled">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20px" height="20px" style="margin-right: 8px;">
+                        <path fill="#FFC107" d="M43.6 20.2h-3.2V20H24v8h11.2c-1.7 4.4-5.8 7.5-10.8 7.5-6.4 0-11.7-5.3-11.7-11.7S17.6 12 24 12c2.8 0 5.4 1 7.4 2.7l6-6C33.2 5.7 28.8 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20c10 0 18.4-7.2 19.9-16.6.1-.6.1-1.3.1-1.9 0-1.1-.1-2.2-.4-3.3z"/>
+                        <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 16 18.1 14 24 14c2.8 0 5.4 1 7.4 2.7l6-6C33.2 5.7 28.8 4 24 4 16.1 4 9.2 8.4 6.3 14.7z"/>
+                        <path fill="#4CAF50" d="M24 44c5.4 0 10.3-2 14-5.3l-6.6-5.5c-2.1 1.4-4.8 2.3-7.4 2.3-5 0-9.2-3.1-10.9-7.5l-6.4 5C9.1 39.3 16 44 24 44z"/>
+                        <path fill="#1976D2" d="M43.6 20.2h-3.2V20H24v8h11.2c-.8 2-2.2 3.8-4 5.2l6.6 5.5c-.7.6 7.6-5.5 7.6-15.7 0-1.1-.1-2.2-.4-3.3z"/>
+                    </svg>
+                    Sign in with Google (Coming Soon)
+                </a>
+            </div>
+        </div>
+
+
+
+        <!-- // END Page Content -->
+
+        <!-- Footer -->
+
+        <div class=" border-top-2 mt-auto">
+            <div class="container page__container page-section d-flex flex-column">
+                <p class="text-70 brand mb-24pt">
+                    <img class="brand-icon"
+                         src="/assets/images/logo/black-70@2x.png"
+                         width="30"
+                         alt="Au Nexus "> Au Nexus
+                </p>
+                <p class="measure-lead-max text-50 small mr-8pt">Au Nexus  is a beautifully crafted user interface for modern Education Platforms.</p>
+                <p class="mb-8pt d-flex">
+                    <a href=""
+                       class="text-70 text-underline mr-8pt small">Terms</a>
+                    <a href=""
+                       class="text-70 text-underline small">Privacy policy</a>
+                </p>
+                <p class="text-50 small mt-n1 mb-0">Copyright 2025 &copy; All rights reserved. ~AYush Kumar</p>
+            </div>
+        </div>
+
+        <!-- // END Footer -->
+
+    </div>
+
+    <!-- // END drawer-layout__content -->
+
+    <!-- Drawer -->
+
+
+
+    <!-- // END Drawer -->
+
+</div>
+
+<!-- // END Drawer Layout -->
+
+<!-- jQuery -->
+<script src="/assets/vendor/jquery.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="/assets/vendor/popper.min.js"></script>
+<script src="/assets/vendor/bootstrap.min.js"></script>
+
+<!-- Perfect Scrollbar -->
+<script src="/assets/vendor/perfect-scrollbar.min.js"></script>
+
+<!-- DOM Factory -->
+<script src="/assets/vendor/dom-factory.js"></script>
+
+<!-- MDK -->
+<script src="/assets/vendor/material-design-kit.js"></script>
+
+<!-- App JS -->
+<script src="/assets/js/app.js"></script>
+
+<!-- Preloader -->
+<script src="/assets/js/preloader.js"></script>
+
+</body>
+
+</html>
