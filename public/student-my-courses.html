@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en"
+<html  lang="en"
       dir="ltr"
       class="dark-mode">
 
@@ -371,24 +371,48 @@
                 <!-- // END BEFORE Page Content -->
 
  <!-- Student My Courses Page -->
-<div class="page-section border-bottom-2">
-    <div class="container page__container">
-        <h2 class="mb-4">My Enrolled Courses</h2>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="list-group">
-                    <div th:each="course : ${enrolledCourses}" class="list-group-item">
-                        <h5 th:text="${course.name}"></h5>
-                        <p>Instructor: <span th:text="${course.instructor.name}"></span></p>
-                        <p>Category: <span th:text="${course.category.name}"></span></p>
-                        <a th:href="@{/student/course-view/{id}(id=${course.id})}" class="btn btn-primary">View Course</a>
+                <!-- Page Content -->
+                <div class="page-section border-bottom-2">
+                    <div class="container page__container">
+                        <h2 class="mb-4">My Enrolled Courses</h2>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="list-group" id="courseList">
+                                    <!-- JS will populate courses here -->
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', async () => {
+                        try {
+                            const res = await fetch('/api/student/my-courses');
+                            const courses = await res.json();
+
+                            const courseList = document.getElementById('courseList');
+                            if (courses.length === 0) {
+                                courseList.innerHTML = '<p>No courses enrolled.</p>';
+                            } else {
+                                courses.forEach(course => {
+                                    const item = document.createElement('div');
+                                    item.className = 'list-group-item';
+                                    item.innerHTML = `
+          <h5>${course.name}</h5>
+          <p>Instructor: ${course.instructorName}</p>
+          <p>Category: ${course.category || 'N/A'}</p>
+          <a href="/student-course.html?id=${course._id}" class="btn btn-primary">View Course</a>
+        `;
+                                    courseList.appendChild(item);
+                                });
+                            }
+                        } catch (err) {
+                            console.error('Error loading courses:', err);
+                        }
+                    });
+                </script>
+
 
 
 

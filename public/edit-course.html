@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en"
+<html  lang="en"
       dir="ltr"
       class="dark-mode">
 
@@ -362,41 +362,57 @@
 
     <!-- // END BEFORE Page Content -->
 
- <!-- Page Content -->
-<div class="page-section border-bottom-2">
-    <div class="container page__container">
-        <div class="row">
-            <div class="col-md-8">
-                <div class="table-responsive">
-                    <table class="table mb-0 thead-border-top-0">
-                        <thead>
-                            <tr>
-                                <th>Course Title</th>
-                                <th>Category</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="course : ${courses}">
-                                <td th:text="${course.courseName}"></td>
-                                <td th:text="${course.category.name}"></td>
-                                <td>
-                                    <a th:href="@{'/instructor-edit-course?courseId=' + ${course.id}}" class="btn btn-primary btn-sm">
-                                        Edit
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr th:if="${#lists.isEmpty(courses)}">
-                                <td colspan="3" class="text-center">No courses available to display.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- // END Page Content -->
+      <!-- Page Content -->
+      <div class="page-section border-bottom-2">
+          <div class="container page__container">
+              <div class="row">
+                  <div class="col-md-8">
+                      <div class="table-responsive">
+                          <table class="table mb-0 thead-border-top-0">
+                              <thead>
+                              <tr>
+                                  <th>Course Title</th>
+                                  <th>Category</th>
+                                  <th>Actions</th>
+                              </tr>
+                              </thead>
+                              <tbody id="courseList">
+                              <!-- Populated via JS -->
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <script>
+          fetch('/admin/all-courses')
+              .then(res => res.json())
+              .then(data => {
+                  const table = document.getElementById('courseList');
+                  if (!data.length) {
+                      table.innerHTML = `<tr><td colspan="3" class="text-center">No courses available to display.</td></tr>`;
+                      return;
+                  }
+                  data.forEach(course => {
+                      table.innerHTML += `
+          <tr>
+            <td>${course.name}</td>
+            <td>${course.category?.name || 'N/A'}</td>
+            <td>
+              <a href="/instructor-edit-course.html?courseId=${course._id}" class="btn btn-primary btn-sm">Edit</a>
+            </td>
+          </tr>
+        `;
+                  });
+              })
+              .catch(() => {
+                  document.getElementById('courseList').innerHTML =
+                      `<tr><td colspan="3" class="text-center text-danger">Error loading courses</td></tr>`;
+              });
+      </script>
+
 
 `
 

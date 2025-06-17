@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en"
+<html  lang="en"
       dir="ltr"
       class="dark-mode">
 
@@ -387,79 +387,129 @@
 
                 <!-- // END BEFORE Page Content -->
 
- <!-- Page Content -->
-<div class="page-section border-bottom-2">
-    <div class="container page__container">
-        <div class="row">
-            <div class="col-md-8">
-                <div class="page-separator">
-                    <div class="page-separator__text">Basic information</div>
-                </div>
+                <!-- Page Content -->
+                <div class="page-section border-bottom-2">
+                    <div class="container page__container">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="page-separator">
+                                    <div class="page-separator__text">Basic information</div>
+                                </div>
 
-                <form th:action="@{/instructor/update-course}" th:object="${course}" method="post">
-                    <div class="form-group mb-24pt">
-                        <label class="form-label">Course title</label>
-                        <input type="text" th:field="*{courseName}" class="form-control form-control-lg" placeholder="Course title">
-                        <small class="form-text text-muted">Please see our <a href="">course title guideline</a></small>
-                    </div>
+                                <form id="editCourseForm" method="POST" action="/instructor/update-course">
+                                    <div class="form-group mb-24pt">
+                                        <label class="form-label">Course title</label>
+                                        <input type="text" name="courseName" class="form-control form-control-lg" placeholder="Course title" required>
+                                        <small class="form-text text-muted">Please see our <a href="#">course title guideline</a></small>
+                                    </div>
 
-                    <div class="form-group mb-32pt">
-                        <label class="form-label">Description</label>
-                        <textarea class="form-control" th:field="*{description}" rows="3" placeholder="Course description"></textarea>
-                        <small class="form-text text-muted">Shortly describe this course.</small>
-                    </div>
+                                    <div class="form-group mb-32pt">
+                                        <label class="form-label">Description</label>
+                                        <textarea class="form-control" name="description" rows="3" placeholder="Course description" required></textarea>
+                                        <small class="form-text text-muted">Shortly describe this course.</small>
+                                    </div>
 
-                    <!-- Dynamically add and manage sections with JavaScript or Thymeleaf -->
-                    <div class="page-separator">
-                        <div class="page-separator__text">Sections</div>
-                    </div>
-                    <!-- Example of a single section, replicate this structure dynamically -->
-                    <div th:each="section, stat : ${course.chapters}">
-                        <div th:id="'course-toc-' + ${stat.index}">
-                            <div th:text="${section.title}"></div>
-                            <!-- Section content here -->
+                                    <div class="page-separator">
+                                        <div class="page-separator__text">Sections</div>
+                                    </div>
+                                    <div id="chapterList">
+                                        <!-- Chapters will be loaded dynamically using JS -->
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                </form>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-header text-center">
+                                        <a href="#" class="btn btn-accent" onclick="document.getElementById('editCourseForm').submit()">Save changes</a>
+                                    </div>
+                                    <div class="list-group list-group-flush">
+                                        <div class="list-group-item d-flex">
+                                            <a class="flex" href="#"><strong>Save Draft</strong></a>
+                                            <i class="material-icons text-muted">check</i>
+                                        </div>
+                                        <div class="list-group-item">
+                                            <a href="#" class="text-danger"><strong>Delete Course</strong></a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card">
+                                    <div class="embed-responsive embed-responsive-16by9">
+                                        <iframe class="embed-responsive-item" id="videoPreview" src="" allowfullscreen=""></iframe>
+                                    </div>
+                                    <div class="card-body">
+                                        <label class="form-label">Video URL</label>
+                                        <input type="text" id="videoUrl" name="videoUrl" class="form-control" placeholder="Enter Video URL" oninput="updateVideoPreview(this.value)">
+                                        <small class="form-text text-muted">Enter a valid video URL.</small>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    
-                    <button type="submit" class="btn btn-primary">Save changes</button>
-                </form>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header text-center">
-                        <a href="#" class="btn btn-accent">Save changes</a>
-                    </div>
-                    <div class="list-group list-group-flush">
-                        <div class="list-group-item d-flex">
-                            <a class="flex" href="#"><strong>Save Draft</strong></a>
-                            <i class="material-icons text-muted">check</i>
-                        </div>
-                        <div class="list-group-item">
-                            <a href="#" class="text-danger"><strong>Delete Course</strong></a>
-                        </div>
-                    </div>
                 </div>
 
-                <div class="card">
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <iframe class="embed-responsive-item"
-                                th:src="${course.videoUrl}"
-                                allowfullscreen=""></iframe>
-                    </div>
-                    <div class="card-body">
-                        <label class="form-label">URL</label>
-                        <input type="text" th:field="*{videoUrl}" class="form-control" placeholder="Enter Video URL">
-                        <small class="form-text text-muted">Enter a valid video URL.</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- // END Page Content -->
+                <!-- JS for previewing video and loading chapters -->
+                <script>
+                    function updateVideoPreview(url) {
+                        document.getElementById("videoPreview").src = url;
+                    }
+
+                    // Load course and chapters (optional enhancement)
+                    window.onload = function () {
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const courseId = urlParams.get("id");
+                        if (!courseId) return;
+
+                        fetch(`/api/courses/${courseId}`)
+                            .then(res => res.json())
+                            .then(data => {
+                                document.querySelector('[name="courseName"]').value = data.name;
+                                document.querySelector('[name="description"]').value = data.description;
+                                document.getElementById("videoUrl").value = data.videoUrl || '';
+                                updateVideoPreview(data.videoUrl || '');
+
+                                const chapterList = document.getElementById("chapterList");
+                                data.chapters.forEach((ch, i) => {
+                                    const div = document.createElement('div');
+                                    div.className = 'mb-3';
+                                    div.innerHTML = `
+          <h5>Chapter ${i + 1}: ${ch.title}</h5>
+          <p>${ch.description}</p>
+        `;
+                                    chapterList.appendChild(div);
+                                });
+                            });
+                    }
+                </script>
+
+                <script>
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const courseId = urlParams.get('id');
+
+                    if (courseId) {
+                        fetch(`/instructor/api/course/${courseId}`)
+                            .then(res => res.json())
+                            .then(course => {
+                                document.querySelector('input[name="courseName"]').value = course.name || '';
+                                document.querySelector('textarea[name="description"]').value = course.description || '';
+                                document.querySelector('input[name="videoUrl"]').value = course.videoUrl || '';
+
+                                // Set form action to update with correct course ID
+                                document.querySelector('form').action = `/instructor/update-course/${courseId}`;
+                            })
+                            .catch(err => alert('Failed to load course'));
+                    } else {
+                        alert('Course ID not specified in URL');
+                    }
+                </script>
 
 
-<!-- Footer -->
+
+
+                <!-- Footer -->
 
                 <div class=" border-top-2 mt-auto">
                     <div class="container page__container page-section d-flex flex-column">

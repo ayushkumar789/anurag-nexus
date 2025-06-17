@@ -5,6 +5,13 @@ const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const studentRoutes = require('./routes/studentRoutes');
+const instructorRoutes = require('./routes/instructorRoutes');
+const expressFileUpload = require('express-fileupload');
+const categoryRoutes = require('./routes/categoryRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+
+
+global.__basedir = path.resolve(__dirname, '..');
 
 require('dotenv').config();
 const app = express();
@@ -13,8 +20,10 @@ const app = express();
 connectDB();
 
 // Middleware
+app.use(expressFileUpload());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
 const ensureAuthenticated = require('./middlewares/authMiddleware');
 
 // Session setup
@@ -29,8 +38,9 @@ app.use(session({
 app.use('/api', authRoutes);
 app.use('/api', profileRoutes);
 app.use('/api', studentRoutes);
-
-
+app.use('/', instructorRoutes);
+app.use('/', categoryRoutes);
+app.use('/', adminRoutes);
 // Protected Routes FIRST
 app.get('/student-dashboard.html', ensureAuthenticated, (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'student-dashboard.html'));

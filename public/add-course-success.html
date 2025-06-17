@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en"
+<html  lang="en"
       dir="ltr"
       class="dark-mode">
 
@@ -53,71 +53,54 @@
           href="/assets/css/dark.css"
           rel="stylesheet">
     <style>
-        /* Centering the success message */
         .success-container {
             text-align: center;
             margin-top: 100px;
+            padding: 30px;
         }
 
-        /* Green checkmark animation */
         .success-circle {
-            display: inline-block;
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            background-color: #28a745;
+            background-color: #4caf50;
+            display: inline-block;
+            margin-bottom: 20px;
             position: relative;
-            animation: popIn 0.5s ease-in-out;
         }
 
-        .success-circle::before {
-            content: "";
+        .success-circle::after {
+            content: "✓";
+            color: white;
+            font-size: 48px;
+            font-weight: bold;
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 50px;
-            height: 25px;
-            border: solid white;
-            border-width: 0 0 6px 6px;
-            transform: translate(-50%, -50%) rotate(-45deg);
-            animation: checkmark 0.3s ease-in-out 0.5s forwards;
+            transform: translate(-50%, -50%);
         }
 
-        @keyframes popIn {
-            0% { transform: scale(0); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        @keyframes checkmark {
-            0% { width: 0; height: 0; opacity: 0; }
-            100% { width: 50px; height: 25px; opacity: 1; }
-        }
-
-        /* Signup successful text (white color) */
         .success-text {
             font-size: 24px;
-            color: white;
             font-weight: bold;
-            margin-top: 20px;
+            margin-bottom: 30px;
+            color: #4caf50;
         }
 
-        /* Blue "Go to Login" button */
-        .btn-home {
-            margin-top: 20px;
+        .btn {
+            margin: 8px;
             padding: 12px 24px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
+            font-size: 16px;
             text-decoration: none;
-            font-size: 18px;
+            border-radius: 4px;
+            background-color: #3f51b5;
+            color: white;
             display: inline-block;
-            transition: 0.3s;
-            font-weight: bold;
+            transition: 0.3s ease;
         }
 
-        .btn-home:hover {
-            background-color: #0056b3;
+        .btn:hover {
+            background-color: #303f9f;
         }
     </style>
 
@@ -272,12 +255,12 @@
         <!-- // END BEFORE Page Content -->
 
 
-<div class="success-container">
-    <div class="success-circle"></div>
-    <div class="success-text">🎉 Course Added Successfully! 🎉</div>
-    <a href="/instructor/courses" class="btn">View Courses</a>
-        <a href="/instructor/add-course" class="btn">Add Another Course</a>
-</div>
+        <div class="success-container">
+            <div class="success-circle"></div>
+            <div class="success-text">🎉 Course Added Successfully! 🎉</div>
+            <a href="/instructor/courses" class="btn">View Courses</a>
+            <a href="/instructor/add-course" class="btn">Add Another Course</a>
+        </div>
 
         <!-- Footer -->
 

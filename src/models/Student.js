@@ -19,7 +19,13 @@ const studentSchema = new mongoose.Schema({
     },
     address: {
         type: String
-    }
+    },
+    enrolledCourses: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Course'
+        }
+    ]
 }, { timestamps: true });
 
 module.exports = mongoose.model('Student', studentSchema);

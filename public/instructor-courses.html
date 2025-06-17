@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en"
+<html  lang="en"
       dir="ltr"
       class="dark-mode">
 
@@ -383,87 +383,115 @@
 
                 <!-- // END BEFORE Page Content -->
 
-<!-- Page Content -->
-<div class="container page__container page-section">
+                <!-- Page Content -->
+                <div class="container page__container page-section">
+                    <div class="page-separator">
+                        <div class="page-separator__text">Your Courses</div>
+                    </div>
 
-    <div class="page-separator">
-        <div class="page-separator__text">Your Courses</div>
-    </div>
+                    <div class="row" id="coursesContainer">
+                        <!-- JS will render courses -->
+                    </div>
 
-    <div class="row">
-        <!-- Iterate Over Instructor's Courses -->
-        <div th:each="course : ${instructorCourses}" class="col-sm-6 col-md-4 col-xl-3">
-            <div class="card card-sm card--elevated p-relative o-hidden overlay overlay--primary js-overlay mdk-reveal js-mdk-reveal"
-                 data-overlay-onload-show
-                 data-popover-onload-show
-                 data-force-reveal
-                 data-partial-height="44"
-                 data-toggle="popover"
-                 data-trigger="click">
-                 
-                <a th:href="@{/instructor/edit-course/{id}(id=${course.id})}" class="js-image">
-                    <img th:src="${course.imagePath != null and course.imagePath != '' ? course.imagePath : '/static/assets/images/courses-default.png'}"
-                         alt="course">
-                    <span class="overlay__content align-items-start justify-content-start">
-                        <span class="overlay__action card-body d-flex align-items-center">
-                            <i class="material-icons mr-4pt">edit</i>
-                            <span class="card-title text-white">Edit</span>
-                        </span>
-                    </span>
-                </a>
-
-                <div class="mdk-reveal__content">
-                    <div class="card-body">
-                        <div class="d-flex">
-                            <div class="flex">
-                                <a class="card-title mb-4pt"
-                                   th:href="@{/instructor/edit-course/{id}(id=${course.id})}"
-                                   th:text="${course.name}">Course Name</a>
-                            </div>
-                            <a th:href="@{/instructor/edit-course/{id}(id=${course.id})}"
-                               class="ml-4pt material-icons text-20 card-course__icon-favorite">edit</a>
-                        </div>
-
-                        <div class="d-flex">
-                            <div class="rating flex">
-                                <span th:each="star : ${#numbers.sequence(1,4)}" class="rating__item">
-                                    <span class="material-icons">star</span>
-                                </span>
-                                <span class="rating__item"><span class="material-icons">star_border</span></span>
-                            </div>
-                            <small class="text-50" th:text="${course.duration != null ? course.duration + ' hours' : 'N/A'}">6 hours</small>
-                        </div>
+                    <div class="mb-32pt" id="paginationContainer">
+                        <!-- JS will render pagination -->
                     </div>
                 </div>
+
+                <script>
+                    async function fetchCourses(page = 1) {
+                        const container = document.getElementById('coursesContainer');
+                        const pagination = document.getElementById('paginationContainer');
+                        container.innerHTML = '';
+                        pagination.innerHTML = '';
+
+                        try {
+                            const res = await fetch(`/api/instructor/my-courses?page=${page}`);
+                            const data = await res.json();
+
+                            if (!data.courses.length) {
+                                container.innerHTML = `<p class="text-center text-muted">No courses found.</p>`;
+                                return;
+                            }
+
+                            data.courses.forEach(course => {
+                                const div = document.createElement('div');
+                                div.className = 'col-sm-6 col-md-4 col-xl-3';
+                                div.innerHTML = `
+        <div class="card card-sm card--elevated p-relative o-hidden overlay overlay--primary">
+          <a href="/instructor/edit-course/${course._id}" class="js-image">
+            <img src="${course.imagePath || '/assets/images/courses-default.png'}" alt="course">
+            <span class="overlay__content align-items-start justify-content-start">
+              <span class="overlay__action card-body d-flex align-items-center">
+                <i class="material-icons mr-4pt">edit</i>
+                <span class="card-title text-white">Edit</span>
+              </span>
+            </span>
+          </a>
+          <div class="card-body">
+            <div class="d-flex">
+              <div class="flex">
+                <a class="card-title mb-4pt" href="/instructor/edit-course/${course._id}">
+                  ${course.name}
+                </a>
+              </div>
+              <a href="/instructor/edit-course/${course._id}" class="ml-4pt material-icons text-20 card-course__icon-favorite">edit</a>
             </div>
+            <div class="d-flex">
+              <div class="rating flex">
+                ${'<span class="rating__item"><span class="material-icons">star</span></span>'.repeat(4)}
+                <span class="rating__item"><span class="material-icons">star_border</span></span>
+              </div>
+              <small class="text-50">${course.duration || 'N/A'} hours</small>
+            </div>
+          </div>
         </div>
-    </div>
+      `;
+                                container.appendChild(div);
+                            });
 
-    <!-- Pagination -->
-    <div class="mb-32pt">
-        <ul class="pagination justify-content-start pagination-xsm m-0">
-            <li class="page-item" th:if="${currentPage > 1}">
-                <a class="page-link" th:href="@{/instructor/courses(page=${currentPage - 1})}">
-                    <span aria-hidden="true" class="material-icons">chevron_left</span>
-                    <span>Prev</span>
-                </a>
-            </li>
+                            // Pagination logic
+                            let pagHTML = `<ul class="pagination justify-content-start pagination-xsm m-0">`;
+                            if (data.currentPage > 1) {
+                                pagHTML += `
+        <li class="page-item">
+          <a class="page-link" href="javascript:void(0)" onclick="fetchCourses(${data.currentPage - 1})">
+            <span class="material-icons">chevron_left</span> Prev
+          </a>
+        </li>`;
+                            }
 
-            <li class="page-item" th:each="pageNum : ${#numbers.sequence(1, totalPages)}">
-                <a class="page-link" th:href="@{/instructor/courses(page=${pageNum})}" th:text="${pageNum}"></a>
-            </li>
+                            for (let i = 1; i <= data.totalPages; i++) {
+                                pagHTML += `
+        <li class="page-item ${i === data.currentPage ? 'active' : ''}">
+          <a class="page-link" href="javascript:void(0)" onclick="fetchCourses(${i})">${i}</a>
+        </li>`;
+                            }
 
-            <li class="page-item" th:if="${currentPage < totalPages}">
-                <a class="page-link" th:href="@{/instructor/courses(page=${currentPage + 1})}">
-                    <span>Next</span>
-                    <span aria-hidden="true" class="material-icons">chevron_right</span>
-                </a>
-            </li>
-        </ul>
-    </div>
+                            if (data.currentPage < data.totalPages) {
+                                pagHTML += `
+        <li class="page-item">
+          <a class="page-link" href="javascript:void(0)" onclick="fetchCourses(${data.currentPage + 1})">
+            Next <span class="material-icons">chevron_right</span>
+          </a>
+        </li>`;
+                            }
 
-</div>
-<!-- // END Page Content -->
+                            pagHTML += `</ul>`;
+                            pagination.innerHTML = pagHTML;
+
+                        } catch (err) {
+                            console.error('Error fetching courses:', err);
+                            container.innerHTML = `<p class="text-danger text-center">Failed to load courses.</p>`;
+                        }
+                    }
+
+                    // Load first page
+                    document.addEventListener('DOMContentLoaded', () => fetchCourses(1));
+                </script>
+
+
+
 
 
 

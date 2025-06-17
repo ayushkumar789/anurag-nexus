@@ -1,4 +1,6 @@
 const Student = require('../models/Student');
+const Course = require('../models/Course');
+
 
 exports.getStudentProfile = async (req, res) => {
     const studentId = req.params.id;
@@ -34,6 +36,23 @@ exports.getAllStudents = async (req, res) => {
     } catch (err) {
         console.error(err.message);
         res.status(500).json({ message: 'Server error' });
+    }
+};
+
+exports.getMyCourses = async (req, res) => {
+    try {
+        const userId = req.session.user._id;
+        const courses = await Course.find({ enrolledStudents: userId });
+
+        res.json(courses.map(course => ({
+            _id: course._id,
+            name: course.name,
+            instructorName: course.instructorName,
+            category: course.category
+        })));
+    } catch (err) {
+        console.error('Error fetching enrolled courses:', err);
+        res.status(500).json({ error: 'Server error' });
     }
 };
 

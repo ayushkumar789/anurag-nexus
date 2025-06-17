@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en"
+<html  lang="en"
       dir="ltr"
       class="dark-mode">
 
@@ -381,76 +381,108 @@
 
                 <!-- // END BEFORE Page Content -->
 
-<!-- Page Content -->
-<div class="container page__container page-section">
-    <div class="page-separator">
-        <div class="page-separator__text">Basic Information</div>
-    </div>
-    <div class="col-md-6 p-0">
-        <!-- Form to update user account details -->
-        <form th:action="@{/edit-account}" th:object="${accountDetails}" method="post">
-            <div class="form-group">
-                <label class="form-label">First Name</label>
-                <input type="text"
-                       th:field="*{firstName}"
-                       class="form-control"
-                       placeholder="Your first name ..." required>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Last Name</label>
-                <input type="text"
-                       th:field="*{lastName}"
-                       class="form-control"
-                       placeholder="Your last name ..." required>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Email Address</label>
-                <input type="email"
-                       th:field="*{email}"
-                       class="form-control"
-                       placeholder="Your email address ..." readonly>
-                <small class="form-text text-muted">Note that your email is read-only and cannot be changed.</small>
-            </div>
-            <div th:if="${role == 'student'}">
-                <!-- Student-specific field: Date of Birth -->
-                <div class="form-group">
-                    <label class="form-label">Date of Birth</label>
-                    <input type="date"
-                           th:field="*{dateOfBirth}"
-                           class="form-control"
-                           placeholder="Your date of birth ..."
-                           th:max="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
-                </div>
-            </div>
-            <div th:if="${role == 'instructor'}">
-                <!-- Instructor-specific field: Department -->
-                <div class="form-group">
-                    <label class="form-label">Department</label>
-                    <input type="text"
-                           th:field="*{department}"
-                           class="form-control"
-                           placeholder="Your department ...">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Phone Number</label>
-                <input type="text"
-                       th:field="*{phoneNumber}"
-                       class="form-control"
-                       placeholder="Your phone number ...">
-            </div>
-            <div class="form-group">
-                <label class="form-label">Address</label>
-                <textarea class="form-control"
-                          th:field="*{address}"
-                          placeholder="Your address ..."></textarea>
-            </div>
-            <button class="btn btn-primary">Save Changes</button>
-        </form>
-    </div>
-</div>
-<!-- // END Page Content -->
+                <!-- Page Content -->
+                <div class="container page__container page-section">
+                    <div class="page-separator">
+                        <div class="page-separator__text">Basic Information</div>
+                    </div>
+                    <div class="col-md-6 p-0">
+                        <form id="editAccountForm">
+                            <div class="form-group">
+                                <label class="form-label">First Name</label>
+                                <input type="text" id="firstName" name="firstName" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" id="lastName" name="lastName" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email Address</label>
+                                <input type="email" id="email" name="email" class="form-control" readonly>
+                                <small class="form-text text-muted">Note that your email is read-only and cannot be changed.</small>
+                            </div>
 
+                            <div id="studentFields" style="display: none;">
+                                <div class="form-group">
+                                    <label class="form-label">Date of Birth</label>
+                                    <input type="date" id="dob" name="dob" class="form-control">
+                                </div>
+                            </div>
+
+                            <div id="instructorFields" style="display: none;">
+                                <div class="form-group">
+                                    <label class="form-label">Department</label>
+                                    <input type="text" id="department" name="department" class="form-control">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Phone Number</label>
+                                <input type="text" id="phone" name="phone" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Address</label>
+                                <textarea id="address" name="address" class="form-control"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- JS Logic -->
+                <script>
+                    document.addEventListener('DOMContentLoaded', async () => {
+                        try {
+                            const res = await fetch('/api/profile/edit-account');
+                            const data = await res.json();
+
+                            document.querySelector('[name="firstName"]').value = data.firstName || '';
+                            document.querySelector('[name="lastName"]').value = data.lastName || '';
+                            document.querySelector('[name="email"]').value = data.email || '';
+                            document.querySelector('[name="phoneNumber"]').value = data.phoneNumber || '';
+                            document.querySelector('[name="address"]').value = data.address || '';
+                            if (data.role === 'student' || data.role === 'STUDENT') {
+                                document.querySelector('[name="dateOfBirth"]').value = data.dateOfBirth || '';
+                            } else if (data.role === 'instructor' || data.role === 'INSTRUCTOR') {
+                                document.querySelector('[name="department"]').value = data.department || '';
+                            }
+                        } catch (err) {
+                            console.error('Error fetching account info:', err);
+                        }
+
+                        document.querySelector('form').addEventListener('submit', async (e) => {
+                            e.preventDefault();
+                            const payload = {
+                                firstName: document.querySelector('[name="firstName"]').value,
+                                lastName: document.querySelector('[name="lastName"]').value,
+                                phoneNumber: document.querySelector('[name="phoneNumber"]').value,
+                                address: document.querySelector('[name="address"]').value,
+                                dateOfBirth: document.querySelector('[name="dateOfBirth"]')?.value,
+                                department: document.querySelector('[name="department"]')?.value
+                            };
+
+                            try {
+                                const res = await fetch('/api/profile/edit-account', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify(payload)
+                                });
+
+                                if (res.ok) {
+                                    alert('Account updated successfully!');
+                                    location.reload();
+                                } else {
+                                    alert('Failed to update account');
+                                }
+                            } catch (err) {
+                                console.error('Error updating:', err);
+                            }
+                        });
+                    });
+                </script>
+
+
+                s
 
 <!-- Footer -->
 
